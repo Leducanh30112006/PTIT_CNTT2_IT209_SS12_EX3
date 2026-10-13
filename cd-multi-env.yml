@@ -1,0 +1,43 @@
+name: Multi-Environment CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+jobs:
+  deploy-staging:
+    name: Deploy to Staging
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+      url: https://api.staging.example.com
+    steps:
+      - name: Checkout mã nguồn
+        uses: actions/checkout@v4
+
+      - name: Triển khai ứng dụng lên Staging
+        run: |
+          echo "Triển khai phiên bản thử nghiệm lên môi trường Staging..."
+          echo "Endpoint URL: https://api.staging.example.com"
+          echo "Deployment to Staging completed successfully!"
+
+  deploy-prod:
+    name: Deploy to Production
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://api.prod.example.com
+    steps:
+      - name: Checkout mã nguồn
+        uses: actions/checkout@v4
+
+      - name: Triển khai ứng dụng lên Production
+        run: |
+          echo "Triển khai phiên bản chính thức lên môi trường Production..."
+          echo "Endpoint URL: https://api.prod.example.com"
+          echo "Deployment to Production completed successfully!"
